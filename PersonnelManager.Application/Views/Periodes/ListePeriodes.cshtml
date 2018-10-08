@@ -1,0 +1,104 @@
+﻿@model IEnumerable<PersonnelManager.Dal.Entites.Periode>
+
+<h2>Périodes</h2>
+
+<div class="btn-group btn-primary">
+    <button class="btn" onclick="NouvellePeriode();">Nouvelle période</button>
+</div>
+
+@if (Model == null || !Model.Any())
+{
+    <p class="p1">Pas de période pour le moment...</p>}
+else
+{
+    <div class="clr-row">
+        <table class="table clr-col-xl-6 clr-col-lg-8 clr-col-md-10">
+            <thead>
+                <tr>
+                    <th>Mois</th>
+                    <th>Statut</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var periode in Model)
+                {
+                    <tr>
+                        <td style="font-weight:bold;">@periode.PremierJour.ToString("MMMM")</td>
+                        <td>
+                            @if (periode.EstFermee)
+                            {
+                                <span>Fermée</span>
+                            }
+                            else
+                            {
+                                <span style="color:green">Ouverte</span>
+                            }
+                        </td>
+                        <td class="actions">
+                            @if (!periode.EstFermee)
+                            {
+                                <button class="btn btn-info-outline btn-sm" onclick="FermerPeriode(@periode.Id)">Fermer</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@section scripts{
+    <script>
+        function NouvellePeriode() {
+            $.ajax({
+                type: 'GET',
+                url: '/Periodes/GetNouvellePeriode',
+                success: function (html) {
+                    var modal = document.getElementById('modal');
+                    modal.innerHTML = html;
+                    modal.querySelector('#Annuler').addEventListener('click', () => {
+                        modal.innerHTML = '';
+                    });
+
+                    modal.querySelector('#Creer').addEventListener('click', () => {
+                        let modalForm = modal.querySelector('form');
+                        let divErreur = modal.querySelector('#erreur');
+                        divErreur.style.display = 'none';
+                        if (Valider(modalForm)) {
+                            $.ajax({
+                                type: 'POST',
+                                url: '/Periodes/NouvellePeriode',
+                                data: {
+                                    date: modalForm.querySelector('#JourDuMois').value
+                                },
+                                success: function (resultat) {
+                                    if (resultat.EstReussi) {
+                                        document.location.href = '';
+                                    } else {
+                                        divErreur.querySelector('.alert-text').innerHTML = resultat.MessageErreur;
+                                        divErreur.style.display = 'block';
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                }
+            });
+        }
+        function FermerPeriode(idPeriode) {
+            $.ajax({
+                type: 'POST',
+                url: '/Periodes/FermerPeriode',
+                data: {
+                    idPeriode: idPeriode
+                },
+                success: function () {
+                    document.location.href = '';
+                }
+            });
+        }
+    </script>
+
+}

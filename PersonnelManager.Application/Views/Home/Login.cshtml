@@ -1,0 +1,43 @@
+﻿@using PersonnelManager.Extensions
+@model PersonnelManager.Models.LoginViewModel
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="login-wrapper">
+    <form class="login clr-form" action="Login" method="post">
+        <div class="login-group">
+            <div class="clr-form-control clr-row">
+                <label for="Nom" class="clr-control-label">Nom</label>
+                <div class="clr-control-container">
+                    <div class="clr-input-wrapper">
+                        <input class="username" type="text" id="Nom" name="Nom" placeholder="Nom" value="@Model.Nom" required>
+                        <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+                    </div>
+                </div>
+            </div>
+            <div class="clr-form-control clr-row">
+                <label for="MotDePasse" class="clr-control-label">Mot de passe</label>
+                <div class="clr-control-container">
+                    <div class="clr-input-wrapper">
+                        <input class="password" type="password" id="MotDePasse" name="MotDePasse" placeholder="Mot de passe" value="@Model.MotDePasse" required>
+                        <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+                    </div>
+                </div>
+            </div>
+            <div class="separateur"></div>
+            @Html.MyValidationSummary()
+
+            <button type="submit" class="btn btn-primary" onclick="return Valider();">Connexion</button>
+        </div>
+    </form>
+</div>
+
+@section scripts {
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('Nom').focus();
+    });
+</script>
+
+}

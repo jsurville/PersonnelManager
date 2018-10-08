@@ -1,0 +1,77 @@
+﻿@model PersonnelManager.Models.ListeRelevesViewModel
+@{
+    var historique = Model.RelevesMensuels.Where(x => x.Periode.EstFermee);
+    var relevesEnCours = Model.RelevesMensuels.Where(x => !x.Periode.EstFermee);
+}
+
+<h2>Relevés mensuels</h2>
+
+@if (Model.PeriodesOuvertes.Any() || relevesEnCours.Any())
+{
+    <h3>Périodes à saisir</h3>
+    <div class="clr-row">
+        <table class="table clr-col-xl-6 clr-col-lg-8 clr-col-md-10">
+            <thead>
+                <tr>
+                    <th>Mois</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var periode in Model.PeriodesOuvertes)
+                {
+                    <tr>
+                        <td>@periode.PremierJour.ToString("MMMM")</td>
+                        <td class="action">
+                            <a class="btn btn-info-outline btn-sm" href="/Releves/Nouveau?idPeriode=@periode.Id&idOuvrier=@Model.IdOuvrier">Saisir</a>
+                        </td>
+                    </tr>
+                }
+                @foreach (var releve in relevesEnCours)
+                {
+                    <tr>
+                        <td>@releve.Periode.PremierJour.ToString("MMMM")</td>
+                        <td class="action">
+                            <a class="btn btn-info-outline btn-sm" href="/Releves/Saisie?idReleve=@releve.Id">Modifier</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@if (historique.Any())
+{
+    <h3>Historique</h3>
+    <div class="clr-row">
+        <table class="table clr-col-xl-6 clr-col-lg-8 clr-col-md-10">
+            <thead>
+                <tr>
+                    <th>Mois</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var releve in historique)
+                {
+                    <tr>
+                        <td>@releve.Periode.PremierJour.ToString("MMMM")</td>
+                        <td class="action">
+                            @if (!releve.Periode.EstFermee)
+                            {
+                                <a class="btn btn-info-outline btn-sm" href="/Releves/Saisie?idReleve=@releve.Id">Modifier</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@section scripts{
+    <script>
+    </script>
+
+}

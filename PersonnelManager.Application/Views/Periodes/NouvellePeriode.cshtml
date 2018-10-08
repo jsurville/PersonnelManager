@@ -1,0 +1,42 @@
+﻿<div class="modal">
+    <div class="modal-dialog" role="dialog" aria-hidden="true">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button aria-label="Close" class="close" type="button">
+                    <clr-icon aria-hidden="true" shape="close"></clr-icon>
+                </button>
+                <h3 class="modal-title">Nouvelle période</h3>
+            </div>
+            <div class="modal-body">
+                <form class="clr-form">
+                    <div class="clr-form-control">
+                        <label for="PremierJour" class="clr-control-label">Mois</label>
+                        <div class="clr-control-container">
+                            <div class="clr-input-wrapper">
+                                <input type="date" id="JourDuMois" name="JourDuMois" class="clr-input" required>
+                                <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+                            </div>
+                            <span class="clr-subtext">Sélectionne une date, le mois sera pris</span>
+                        </div>
+                    </div>
+                </form>
+                <div id="erreur" class='alert alert-danger' style="display:none;">
+                    <div class='alert-items'>
+                        <div class='alert-item static'>
+                            <div class='alert-icon-wrapper'>
+                                <clr-icon class='alert-icon' shape='exclamation-circle'></clr-icon>
+                            </div>
+                            <span class='alert-text'>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="Annuler" class="btn btn-outline" type="button">Annuler</button>
+                <button id="Creer" class="btn btn-primary" type="button">Créer</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-backdrop" aria-hidden="true"></div>

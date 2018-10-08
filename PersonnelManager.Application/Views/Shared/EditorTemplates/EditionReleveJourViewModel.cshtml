@@ -1,0 +1,40 @@
+﻿@model PersonnelManager.Models.EditionReleveJourViewModel
+
+<div class="card clr-col ReleveJour">
+    <div class="card-header">
+        @Model.Date.ToString("dd")
+    </div>
+    <div class="card-block">
+        <div class="card-title">
+            <input type="hidden" 
+                   id="@ViewData["Prefix"]_@ViewData["Index"]_Date" 
+                   name="@(ViewData["Prefix"])[@(ViewData["Index"])].Date" 
+                   value="@Model.Date">
+            <div class="clr-form-control">
+                <label for="@ViewData["Prefix"]_@ViewData["Index"]_NombreHeures" class="clr-control-label">Heures</label>
+                <div class="clr-control-container">
+                    <div class="clr-input-wrapper">
+                        <input type="number" 
+                               id="@ViewData["Prefix"]_@ViewData["Index"]_NombreHeures" 
+                               name="@(ViewData["Prefix"])[@(ViewData["Index"])].NombreHeures" 
+                               class="clr-input" 
+                               min="0" 
+                               value="@Model.NombreHeures" 
+                               required>
+                        <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+                    </div>
+                </div>
+            </div>
+            <div class="clr-form-control">
+                <div class="checkbox">
+                    <input type="checkbox" 
+                           id="@ViewData["Prefix"]_@ViewData["Index"]_JourNonTravaille" 
+                           name="@(ViewData["Prefix"])[@(ViewData["Index"])].JourNonTravaille" 
+                           @(Model.JourNonTravaille ? "checked=checked" : "")
+                           value="True">
+                    <label for="@ViewData["Prefix"]_@ViewData["Index"]_JourNonTravaille">Jour non travaillé</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

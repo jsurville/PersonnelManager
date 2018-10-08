@@ -1,0 +1,64 @@
+﻿@using PersonnelManager.Extensions
+@model PersonnelManager.Models.EditionReleveMensuelViewModel
+@{
+    var index = 0;
+}
+<h2>Relevé pour @Model.Periode.PremierJour.ToString("MMMM")</h2>
+
+<form method="post">
+    <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+    <input type="hidden" id="IdPeriode" name="IdPeriode" value="@Model.IdPeriode" />
+    <input type="hidden" id="IdOuvrier" name="IdOuvrier" value="@Model.IdOuvrier" />
+    <div class="Jours clr-row">
+        <div class="clr-col">LUNDI</div>
+        <div class="clr-col">MARDI</div>
+        <div class="clr-col">MERCREDI</div>
+        <div class="clr-col">JEUDI</div>
+        <div class="clr-col">VENDREDI</div>
+    </div>
+    @foreach (var ligne in Model.GetTableauRelevesJours())
+    {
+        <div class="clr-row">
+            @foreach (var releveJour in ligne)
+            {
+                if (releveJour == null)
+                {
+                    <div class="clr-col"></div>
+                }
+                else
+                {
+                    @Html.EditorFor(m => releveJour, new { Prefix = "Jours", Index = index })
+                    index++;
+                }
+            }
+        </div>
+    }
+
+    <div class="separateur"></div>
+    @Html.MyValidationSummary()
+
+    <button type="submit" class="btn btn-primary" onclick="return Valider();">Enregistrer</button>
+    <a href="/Management" class="btn btn-outline">Annuler</a>
+</form>
+
+@section scripts{
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            var relevesJours = document.querySelectorAll('.ReleveJour');
+            for (let releveJour of relevesJours) {
+                let inputNombreHeures = releveJour.querySelector('[name$=NombreHeures]');
+                let checkboxNonTravaille = releveJour.querySelector('[name$=JourNonTravaille]');
+                checkboxNonTravaille.addEventListener('change', () => {
+                    if (checkboxNonTravaille.checked) {
+                        inputNombreHeures.value = 0;
+                        inputNombreHeures.setAttribute('readonly', 'readonly');
+                    }
+                    else {
+                        inputNombreHeures.value = '';
+                        inputNombreHeures.removeAttribute('readonly');
+                    }
+                });
+            }
+        });
+    </script>
+}

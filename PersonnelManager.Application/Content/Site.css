@@ -1,0 +1,30 @@
+﻿body {
+    min-width: 800px;
+}
+
+.separateur {
+    height: 15px;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+    .table td.actions {
+        width: 1%;
+    }
+
+.Jours div {
+    text-align: center;
+    font-weight: bold;
+    text-transform: uppercase;
+    height: 25px;
+}
+
+.ReleveJour input[name=NombreHeures] {
+    width: 50px;
+}
+
+.ReleveJour .card-header {
+    font-weight: bold;
+}

@@ -1,0 +1,49 @@
+﻿@using PersonnelManager.Dal.Entites
+@model IEnumerable<PersonnelManager.Dal.Entites.Employe>
+
+<h2>Employés</h2>
+
+<div class="btn-group btn-primary">
+    <a href="@Url.Action("NouvelOuvrier", "Employes")" class="btn">Nouvel ouvrier</a>
+    <a href="@Url.Action("NouveauCadre", "Employes")" class="btn btn-success">Nouveau cadre</a>
+</div>
+
+@if (Model == null || !Model.Any())
+{
+    <p class="p1">Pas d'employé pour le moment...</p>}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Date d'embauche</th>
+                <th>Statut</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employe in Model)
+            {
+            <tr>
+                <td>@employe.Nom</td>
+                <td>@employe.Prenom</td>
+                <td>@employe.DateEmbauche.ToShortDateString()</td>
+                <td>@employe.Statut.ToString()</td>
+                <td class="actions">
+                    @if (employe.Statut == StatutEmploye.Cadre)
+                    {
+                        <a class="btn btn-info-outline btn-sm" href="/Employes/EditionCadre?idCadre=@employe.Id">Modifier</a>
+                    }
+                    else if (employe.Statut == StatutEmploye.Ouvrier)
+                    {
+                        <a class="btn btn-info-outline btn-sm" href="/Employes/EditionOuvrier?idOuvrier=@employe.Id">Modifier</a>
+                    }
+
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}

@@ -1,0 +1,59 @@
+﻿@using PersonnelManager.Models;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personnel Manager</title>
+    <link rel="stylesheet" href="@("https://unpkg.com/@clr/ui/clr-ui.min.css")" />
+    <link rel="stylesheet" href="@("https://unpkg.com/@clr/icons/clr-icons.min.css")">
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    @{
+        var utilisateur = Session["Utilisateur"] as Utilisateur;
+    }
+    <div class="main-container">
+        <header class="header-6 space-below">
+            <div class="branding">
+                <a href="@Url.Action("Index", "Home")"
+                   class="nav-link">
+                    <clr-icon shape="users"></clr-icon>
+                    <span class="title">Personnel Manager</span>
+
+                </a>
+            </div>
+            <div class="header-nav">
+                @if (utilisateur != null && utilisateur.Type == TypeUtilisateur.Manager)
+                {
+                    <a href="@Url.Action("Index", "Employes")" class="nav-link nav-text">Employés</a>
+                    <a href="@Url.Action("Index", "Periodes")" class="nav-link nav-text">Périodes</a>
+                }
+                @if (utilisateur != null && utilisateur.Type == TypeUtilisateur.Ouvrier)
+                {
+                    <a href="@Url.Action("Index", "Releves")" class="nav-link nav-text">Relevés</a>
+                }
+            </div>
+            <div class="header-actions">
+                @if (utilisateur != null)
+                {
+                    <a href="@Url.Action("Logoff", "Home")" class="nav-link nav-icon">
+                        <clr-icon shape="logout"></clr-icon>
+                    </a>
+                }
+            </div>
+        </header>
+        <div class="content-container">
+            <div class="content-area">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <div id="modal"></div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/js")
+    <script src="@("https://unpkg.com/@webcomponents/custom-elements/custom-elements.min.js")"></script>
+    <script src="@("https://unpkg.com/@clr/icons/clr-icons.min.js")"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

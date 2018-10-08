@@ -1,0 +1,80 @@
+﻿@using PersonnelManager.Extensions
+@model PersonnelManager.Models.EditionCadreViewModel
+
+@if (Model.Id == null)
+{
+    <h2>Nouveau cadre</h2>
+}
+else
+{
+    <h2>Edition d'un cadre</h2>
+}
+<form method="post" class="clr-form">
+    <input type="hidden" id="Id" name="Id" value="@Model.Id" />
+    <div class="row">
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    Informations sur l'employé
+                </div>
+                <div class="card-block">
+                    <div class="card-title">
+                        <div class="clr-form-control clr-row">
+                            <label for="Nom" class="clr-control-label clr-col-xs-12 clr-col-md-2">Nom</label>
+                            <div class="clr-control-container clr-col-xs-12 clr-col-md-10">
+                                <div class="clr-input-wrapper">
+                                    <input type="text" id="Nom" name="Nom" class="clr-input" value="@Model.Nom" required>
+                                    <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clr-form-control clr-row">
+                            <label for="Prenom" class="clr-control-label clr-col-xs-12 clr-col-md-2">Prénom</label>
+                            <div class="clr-control-container clr-col-xs-12 clr-col-md-10">
+                                <div class="clr-input-wrapper">
+                                    <input type="text" id="Prenom" name="Prenom" class="clr-input" value="@Model.Prenom" required>
+                                    <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    Contrat
+                </div>
+                <div class="card-block">
+                    <div class="card-text">
+                        <div class="clr-form-control clr-row">
+                            <label for="DateEmbauche" class="clr-control-label clr-col-xs-12 clr-col-md-2">Date d'embauche</label>
+                            <div class="clr-control-container clr-col-xs-12 clr-col-md-10">
+                                <div class="clr-input-wrapper">
+                                    <input type="date" id="DateEmbauche" name="DateEmbauche" class="clr-input" value="@(Model.DateEmbauche?.ToString("yyyy-MM-dd"))" required>
+                                    <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clr-form-control clr-row">
+                            <label for="SalaireMensuel" class="clr-control-label clr-col-xs-12 clr-col-md-2">Salaire mensuel</label>
+                            <div class="clr-control-container clr-col-xs-12 clr-col-md-10">
+                                <div class="clr-input-wrapper">
+                                    <input type="number" id="SalaireMensuel" name="SalaireMensuel" class="clr-input" value="@Model.SalaireMensuel.ToString().Replace(",",".")" step="0.01" required>
+                                    <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="separateur"></div>
+    @Html.MyValidationSummary()
+
+    <button type="submit" class="btn btn-primary" onclick="return Valider();">Enregistrer</button>
+    <a href="/Employes" class="btn btn-outline">Annuler</a>
+</form>
