@@ -55,9 +55,12 @@ namespace PersonnelManager.Business.Services
             int BadCharCheckPrenom = special.Match(cadre.Prenom).Length;
             if (BadCharCheckPrenom > 0 || BadCharCheckNom > 0)
             {
-                throw new BusinessException("Les caractères spéciaux ne sont pas autorisés");
+                throw new BusinessException("Les caractères spéciaux ou les chiffres ne sont pas autorisés");
             }
-
+            if (cadre.Nom.Length > 50 || cadre.Prenom.Length > 50)
+            {
+                throw new BusinessException("Le Nom ou Prénom est trop long");
+            }
             this.dataEmploye.EnregistrerCadre(cadre);
         }
 
@@ -87,9 +90,9 @@ namespace PersonnelManager.Business.Services
             int BadCharCheckPrenom = special.Match(ouvrier.Prenom).Length;
             if (BadCharCheckPrenom > 0 || BadCharCheckNom > 0)
             {
-                throw new BusinessException("Les caractères spéciaux ne sont pas autorisés");
+                throw new BusinessException("Les caractères spéciaux ou les chiffres  ne sont pas autorisés");
             }
-            if (ouvrier.Nom.Length > 50)
+            if (ouvrier.Nom.Length > 50 || ouvrier.Prenom.Length > 50)
             {
                 throw new BusinessException("Le Nom ou Prénom est trop long");
             }

@@ -66,6 +66,8 @@
     <Compile Include="fauxDataEmploye.cs" />
     <Compile Include="ServiceEmployeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServicePeriodeTest.cs" />
+    <Compile Include="ServiceReleveTest.cs" />
     <Compile Include="TestsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
