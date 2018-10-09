@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using PersonnelManager.Business.Exceptions;
 using PersonnelManager.Business.Services;
 using PersonnelManager.Dal.Data;
@@ -98,25 +99,86 @@ namespace PersonnelManager.Test
         [TestMethod]
         public void DateEmbaucheCadreAnterieureAujourdhuiPlus3Mois()
         {
-            Assert.Fail();
+            ServiceEmploye serviceEmploye = new ServiceEmploye(new fauxDataEmploye());
+            //var serviceEmploye = new ServiceEmploye(fauxDataEmploye.Object);
+            var cadre = new Cadre
+            {
+                Nom = "Dupont",
+                Prenom = "Gérard",
+                DateEmbauche = new DateTime(2020, 05, 20),
+                SalaireMensuel = 1500
+            };
+
+            var exception = Assert.ThrowsException<BusinessException>(() =>
+            {
+                serviceEmploye.EnregistrerCadre(cadre);
+            });
+            Assert.AreEqual("La date d'embauche ne peut être dans plus de 3 mois",
+                exception.Message);
+
         }
 
         [TestMethod]
         public void DateEmbaucheOuvrierAnterieureAujourdhuiPlus3Mois()
         {
-            Assert.Fail();
+            ServiceEmploye serviceEmploye = new ServiceEmploye(new fauxDataEmploye());
+            //var serviceEmploye = new ServiceEmploye(fauxDataEmploye.Object);
+            var ouvrier = new Ouvrier
+            {
+                Nom = "Dupont",
+                Prenom = "Gérard",
+                DateEmbauche = new DateTime(2019, 05, 20),
+                TauxHoraire = 9
+            };
+
+            var exception = Assert.ThrowsException<BusinessException>(() =>
+            {
+                serviceEmploye.EnregistrerOuvrier(ouvrier);
+            });
+            Assert.AreEqual("La date d'embauche ne peut être dans plus de 3 mois",
+                exception.Message);
         }
 
         [TestMethod]
         public void SalaireCadrePositif()
         {
-            Assert.Fail();
+            ServiceEmploye serviceEmploye = new ServiceEmploye(new fauxDataEmploye());
+            //var serviceEmploye = new ServiceEmploye(fauxDataEmploye.Object);
+            var cadre = new Cadre
+            {
+                Nom = "Dupont",
+                Prenom = "Gérard",
+                DateEmbauche = new DateTime(2017, 10, 20),
+                SalaireMensuel = -1000
+            };
+
+            var exception = Assert.ThrowsException<BusinessException>(() =>
+            {
+                serviceEmploye.EnregistrerCadre(cadre);
+            });
+            Assert.AreEqual("Le salaire mensuel doit être positif",
+                exception.Message);
         }
 
         [TestMethod]
         public void TauxHoraireOuvrierPositif()
         {
-            Assert.Fail();
+            ServiceEmploye serviceEmploye = new ServiceEmploye(new fauxDataEmploye());
+            //var serviceEmploye = new ServiceEmploye(fauxDataEmploye.Object);
+            var ouvrier = new Ouvrier
+            {
+                Nom = "Dupont",
+                Prenom = "Gérard",
+                DateEmbauche = new DateTime(2017, 05, 20),
+                TauxHoraire = -9
+            };
+
+            var exception = Assert.ThrowsException<BusinessException>(() =>
+            {
+                serviceEmploye.EnregistrerOuvrier(ouvrier);
+            });
+            Assert.AreEqual("Le taux horraire doit être positif",
+                exception.Message);
         }
 
         [TestMethod]
@@ -138,6 +200,7 @@ namespace PersonnelManager.Test
             var serviceEmploye = new ServiceEmploye(fauxDataEmploye.Object);
             Assert.ThrowsException<InvalidOperationException>(
                 () => serviceEmploye.EnregistrerOuvrier(null));
+
         }
 
         [TestMethod]
@@ -147,6 +210,7 @@ namespace PersonnelManager.Test
             var serviceEmploye = new ServiceEmploye(fauxDataEmploye.Object);
             Assert.ThrowsException<InvalidOperationException>(
                 () => serviceEmploye.EnregistrerCadre(null));
+
         }
     }
 
