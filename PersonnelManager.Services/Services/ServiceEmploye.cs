@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using PersonnelManager.Business.Exceptions;
 using PersonnelManager.Dal.Data;
 using PersonnelManager.Dal.Entites;
@@ -48,7 +49,14 @@ namespace PersonnelManager.Business.Services
             {
                 throw new BusinessException("Le salaire mensuel doit être positif");
             }
-            
+
+            Regex special = new Regex(@"[^a-zA-Zéàèïëüêâîôöç\s\-]");
+            int BadCharCheckNom = special.Match(cadre.Nom).Length;
+            int BadCharCheckPrenom = special.Match(cadre.Prenom).Length;
+            if (BadCharCheckPrenom > 0 || BadCharCheckNom > 0)
+            {
+                throw new BusinessException("Les caractères spéciaux ne sont pas autorisés");
+            }
 
             this.dataEmploye.EnregistrerCadre(cadre);
         }
@@ -59,6 +67,8 @@ namespace PersonnelManager.Business.Services
             {
                 throw new InvalidOperationException();
             }
+
+            
             if (ouvrier.TauxHoraire <= 0)
             {
                 throw new BusinessException("Le taux horraire doit être positif");
@@ -72,7 +82,13 @@ namespace PersonnelManager.Business.Services
             {
                 throw new BusinessException("La date d'embauche ne peut être dans plus de 3 mois");
             }
-
+            Regex special = new Regex(@"[^a-zA-Zéàèïëüêâîôöç\s\-]");
+            int BadCharCheckNom = special.Match(ouvrier.Nom).Length;
+            int BadCharCheckPrenom = special.Match(ouvrier.Prenom).Length;
+            if (BadCharCheckPrenom > 0 || BadCharCheckNom > 0)
+            {
+                throw new BusinessException("Les caractères spéciaux ne sont pas autorisés");
+            }
             if (ouvrier.Nom.Length > 50)
             {
                 throw new BusinessException("Le Nom ou Prénom est trop long");

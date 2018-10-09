@@ -1,10 +1,12 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using PersonnelManager.Business.Exceptions;
 using PersonnelManager.Business.Services;
 using PersonnelManager.Dal.Data;
 using PersonnelManager.Dal.Entites;
+using PersonnelManager.Tests;
 
 namespace PersonnelManager.Test
 {
@@ -32,17 +34,14 @@ namespace PersonnelManager.Test
             Assert.AreEqual("Le Nom ou Prénom est trop long", exception.Message);
         }
 
-        [TestMethod]
-        public void ValiderDateEmbauche()
-        {
-            Assert.Fail();
-        }
-
 
         [TestMethod]
         public void ValiderNomEtPrenomRequis()
         {
-            Assert.Fail();
+            Assert.IsTrue(
+                TestsHelper.HasAttribute<Employe, RequiredAttribute>(x => x.Nom));
+            Assert.IsTrue(
+                TestsHelper.HasAttribute<Employe, RequiredAttribute>(x => x.Prenom));
         }
 
         [TestMethod]
@@ -184,13 +183,49 @@ namespace PersonnelManager.Test
         [TestMethod]
         public void InterdireCaracteresSpeciauxDansNomEtPrenomCadre()
         {
-            Assert.Fail();
+            var fauxDataEmploye = new Mock<IDataEmploye>();
+
+            //ServiceEmploye serviceEmploye = new ServiceEmploye(new fauxDataEmploye());
+            var serviceEmploye = new ServiceEmploye(fauxDataEmploye.Object);
+            var cadre = new Cadre
+            {
+                Nom = "Dup-ont dfgd@",
+                Prenom = "Géràrd",
+                DateEmbauche = new DateTime(2017, 05, 20),
+                SalaireMensuel = 4000
+            };
+
+            //serviceEmploye.EnregistrerCadre(cadre);
+            var exception = Assert.ThrowsException<BusinessException>(() =>
+            {
+                serviceEmploye.EnregistrerCadre(cadre);
+            });
+            Assert.AreEqual("Les caractères spéciaux ne sont pas autorisés",
+                exception.Message);
         }
 
         [TestMethod]
         public void InterdireCaracteresSpeciauxDansNomEtPrenomOuvrier()
         {
-            Assert.Fail();
+            var fauxDataEmploye = new Mock<IDataEmploye>();
+
+            //ServiceEmploye serviceEmploye = new ServiceEmploye(new fauxDataEmploye());
+            var serviceEmploye = new ServiceEmploye(fauxDataEmploye.Object);
+            var ouvrier = new Ouvrier
+            {
+                Nom = "Dup-ont@ opazeirjz",
+                Prenom = "Gérard",
+                DateEmbauche = new DateTime(2017, 05, 20),
+                TauxHoraire = 10
+            };
+          // serviceEmploye.EnregistrerOuvrier(ouvrier);
+
+            var exception = Assert.ThrowsException<BusinessException>(() =>
+            {
+                serviceEmploye.EnregistrerOuvrier(ouvrier);
+            });
+            Assert.AreEqual("Les caractères spéciaux ne sont pas autorisés",
+                exception.Message);
         }
 
         [TestMethod]
